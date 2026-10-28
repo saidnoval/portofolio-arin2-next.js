@@ -75,10 +75,10 @@ export default function Home() {
         </Kartu>
       </div>
 
-      <Kartu judul="Keahlian">
+          <Kartu judul="Keahlian">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {skills.map((skill) => (
-            <skills
+            <Skillcard
               key={skill.nama}
               nama={skill.nama}
               level={skill.level}
