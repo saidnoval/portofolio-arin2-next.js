@@ -38,7 +38,7 @@ export default function Home() {
     <main className="mx-auto w-full max-w-5xl space-y-6 px-4 py-10">
 
       <Hero
-        nama="Moch Said Abu Noval"
+        nama="Arini Khoiriyah"
         tagline="Siswa kelas XI SMK, calon Junior Web Developer di Kelas Industri UBIG."
       />
 
