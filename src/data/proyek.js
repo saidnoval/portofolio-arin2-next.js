@@ -40,4 +40,20 @@ export const proyek = [
       "Promo voucher",
     ],
   },
+{
+  slug: "portfolio-arini",
+  judul: "Portfolio Arini Khoiriyah",
+  kategori: "Next.js",
+  minggu: "Minggu 04",
+  gambar: "/proyek/image.png",
+  deskripsi: "Website portofolio personal untuk memperkenalkan profil, kemampuan, pengalaman, dan hasil proyek dalam tampilan modern dan responsif.",
+  fitur: [
+    "Hero section dengan profil personal",
+    "Halaman About Me",
+    "Daftar Skills dan kemampuan",
+    "Showcase proyek portofolio",
+    "Halaman kontak",
+    "Desain responsif",
+  ],
+},
 ];
