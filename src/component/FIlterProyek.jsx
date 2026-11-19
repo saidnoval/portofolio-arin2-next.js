@@ -2,31 +2,34 @@
 "use client";
 
 import { useState } from "react";
-import ProyekCard from "@/component/ProjectCard";
+import ProyekCard from "@/component/ProyekCard";
 
-export default function FilterProyek({ proyek }) {
+export default function FilterProyek({ proyek = [] }) {
   const [kategori, setKategori] = useState("Semua");
   const [kata, setKata] = useState("");
 
   const daftarKategori = [
     "Semua",
-    ...new Set(proyek.map((item) => item.kategori)),
+    ...new Set(proyek.map((item) => item.kategori).filter(Boolean)),
   ];
 
   const proyekFilter = proyek.filter((item) => {
     const cocokKategori =
       kategori === "Semua" || item.kategori === kategori;
 
+    const judul = (item.judul ?? "").toLowerCase();
+    const deskripsi = (item.deskripsi ?? "").toLowerCase();
+    const pencarian = kata.toLowerCase();
+
     const cocokKata =
-      item.judul.toLowerCase().includes(kata.toLowerCase()) ||
-      item.deskripsi.toLowerCase().includes(kata.toLowerCase());
+      judul.includes(pencarian) ||
+      deskripsi.includes(pencarian);
 
     return cocokKategori && cocokKata;
   });
 
   return (
     <section className="mt-8">
-    
       <div className="mb-5">
         <input
           type="text"
@@ -60,9 +63,9 @@ export default function FilterProyek({ proyek }) {
 
       {proyekFilter.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-3">
-          {proyekFilter.map((item) => (
-            <ProyekCard key={item.slug} proyek={item} />
-          ))}
+          {proyekFilter.map((item, index) => (
+  <ProyekCard key={item.id ?? item.slug ?? index} proyek={item} />
+        ))}
         </div>
       ) : (
         <p className="rounded-lg bg-gray-100 p-6 text-center text-gray-600 dark:bg-gray-800 dark:text-gray-300">

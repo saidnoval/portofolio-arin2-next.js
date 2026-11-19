@@ -1,24 +1,23 @@
-"use client";
 
-import { useState } from "react";
+"use client"
 
-export default function TombolTema() {
-  const [gelap, setGelap] = useState(false);
+import { useState } from "react"
 
-  function gantiTema() {
-    const temaBaru = !gelap;
+export default function ThemeToggle() {
+    const [gelap, setGelap] = useState(false);
 
-    document.documentElement.classList.toggle("dark", temaBaru);
-    setGelap(temaBaru);
-  }
+    function gantiTema() {
+        const temaAktif = document.documentElement.classList.toggle("dark");
+        setGelap(temaAktif);
+    }
 
-  return (
-    <button
-      type="button"
-      onClick={gantiTema}
-      className="rounded-lg bg-aksen px-4 py-2 text-sm font-semibold text-white transition hover:opacity-80"
-    >
-      {gelap ? "Mode Terang" : "Mode Gelap"}
-    </button>
-  );
+    return (
+        <button
+            type="button"
+            onClick={gantiTema}
+            className="rounded-lg border border-white px-3 py-1 text-sm font-semibold text-white hover:border-aksen hover:bg-aksen"
+        >
+            {gelap ? "mode terang" : "mode gelap"}
+        </button>
+    )
 }
