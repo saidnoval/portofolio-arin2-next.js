@@ -46,7 +46,7 @@ export default function Kontak() {
                   </h3>
 
                   <a
-                    href="https://github.com/saidnoval"
+                    href="https://github.com/aikanawindahresitya-lang"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline dark:text-blue-400"
@@ -57,10 +57,10 @@ export default function Kontak() {
 
                 <div>
                   <a
-                    href="mailto:saidnoval81@gmail.com"
+                    href="mailto:aikanawindahresitya@gmail.com"
                     className="text-blue-600 hover:underline dark:text-blue-400"
                   >
-                    saidnoval81@gmail.com
+                    aikanawindahresitya@gmail.com
                   </a>
                 </div>
               </div>

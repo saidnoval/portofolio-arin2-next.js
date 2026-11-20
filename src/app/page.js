@@ -6,13 +6,18 @@ import SkillCard from "@/component/Skillcard";
 import { proyek } from "@/data/proyek";
 import { supabase } from "@/lib/supabase";
 
-const proyekTerbaru = proyek.slice(-3);
 
 export default async function Home() {
   const { data: skills } = await supabase
     .from("skill")
     .select("*")
     .order("id");
+
+    const {data: proyekTerbaru} = await supabase
+  .from("projects")
+  .select("*")
+  .order("created_at", {ascending: false})
+  .limit(3);
 
   return (
     <main className="min-h-screen w-full bg-latar px-4 py-10 transition-colors dark:bg-gray-900">
