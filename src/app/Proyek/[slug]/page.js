@@ -1,85 +1,100 @@
 
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import { Badge } from "@/component/ui/badge";
-import { separator } from "@/component/ui/separator";
-import { supabase } from "@/lib/supabase";
-
-async function ambilProyek(slug) {
-    const { data } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("slug", slug)
-        .single();
-
-    return data;
-}
-
-export async function generateMetadata({ params }) {
-    const { slug } = await params;
-    const item = await ambilProyek(slug);
-
-    if (!item) {
-        return { title: "Proyek tidak ditemukan" };
-    }
-
-    return {
-        title: item.judul,
-        description: item.deskripsi,
-    };
-}
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/component/ui/card";
 
 export default async function DetailProyek({ params }) {
-    const { slug } = await params;
-    const item = await ambilProyek(slug);
+  const { slug } = await params;
 
-    if (!item) {
-        notFound();
-    }
+  console.log("Slug dari URL:", slug);
 
-    return (
-        <main className="mx-auto max-w-3xl px-4 py-10">
-            <Link
-                href="/Proyek"
-                className="text-sm font-semibold text-aksen hover:underline"
-            >
-                &larr; Kembali ke daftar proyek
-            </Link>
+  const { data: item, error } = await supabaseAdmin
+    .from("projects")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
 
-            <h1 className="mt-4 text-3xl font-bold text-primary md:text-4xl">
-                {item.judul}
-            </h1>
+  console.log("Data proyek:", item);
+  console.log("Error Supabase:", error);
 
-            <div className="mt-3 flex items-center gap-3">
-                <Badge>{item.kategori}</Badge>
-                <span className="text-muted-foreground">
-                    Dibuat di {item.minggu}
-                </span>
-            </div>
+  if (error) {
+    console.error("Gagal mengambil detail proyek:", error.message);
+    throw new Error("Gagal mengambil detail proyek.");
+  }
 
+  if (!item) {
+    notFound();
+  }
+
+  return (
+    <main className="mx-auto w-full max-w-5xl px-4 py-10">
+      <Link
+        href="/Proyek"
+        className="mb-6 inline-block text-sm text-muted-foreground hover:text-primary"
+      >
+        ← Kembali ke Proyek
+      </Link>
+
+      <Card>
+        {item.gambar_url && (
+          <div className="relative aspect-video w-full overflow-hidden">
             <Image
-                src={item.gambar_url}
-                alt={`Tangkapan layar ${item.judul}`}
-                width={640}
-                height={420}
-                loading="eager"
-                className="mt-6 h-auto w-full rounded-xl border border-border"
+              src={item.gambar_url}
+              alt={`Tangkapan layar ${item.judul}`}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 1024px"
             />
+          </div>
+        )}
 
-            <p className="mt-6 text-lg">{item.deskripsi}</p>
+        <CardHeader>
+          <Badge className="w-fit">{item.kategori}</Badge>
 
-            <separator className="my-8" />
+          <CardTitle className="text-3xl">
+            {item.judul}
+          </CardTitle>
 
-            <h2 className="text-2xl font-bold text-primary">
-                Yang Saya Pelajari
-            </h2>
+          <p className="text-sm text-muted-foreground">
+            {item.minggu}
+          </p>
+        </CardHeader>
 
-            <ul className="mt-3 list-disc pl-5">
-                {item.fitur.map((f) => (
-                    <li key={f}>{f}</li>
+        <CardContent>
+          <h2 className="mb-3 text-xl font-semibold">
+            Deskripsi Proyek
+          </h2>
+
+          <p className="whitespace-pre-wrap text-muted-foreground">
+            {item.deskripsi}
+          </p>
+
+          {item.fitur && (
+            <div className="mt-6">
+              <h2 className="mb-3 text-xl font-semibold">
+                Fitur Proyek
+              </h2>
+
+              <ul className="list-inside list-disc space-y-2">
+                {(Array.isArray(item.fitur)
+                  ? item.fitur
+                  : item.fitur.split("\n")
+                ).map((fitur, index) => (
+                  <li key={index}>{fitur}</li>
                 ))}
-            </ul>
-        </main>
-    );
+              </ul>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </main>
+  );
 }
